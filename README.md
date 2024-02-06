@@ -1,58 +1,35 @@
-# Liquid Schema Plugin
+# Liquid Schema Plugin Rollup
 
-This plugin allows Shopify section schema to be imported from JavaScript or JSON files into Liquid sections. It is compatible with any Webpack based build system. This allows you to build partials that can be shared across multiple sections and applied in different contexts such as section blocks or settings.
+This plugin allows Shopify section schema to be imported from JavaScript or JSON files into Liquid sections. It is compatible with any rollup based build system. This allows you to build partials that can be shared across multiple sections and applied in different contexts such as section blocks or settings.
 
 ## Installation
 Install using yarn:
 ```shell
-yarn add --dev liquid-schema-plugin
+yarn add --dev liquid-schema-plugin-rollup-rollup
 ```
 
 Or npm:
 ```shell
-npm install --save-dev liquid-schema-plugin
-```
-
-### Slate v1
-
-Add the plugin to `slate.config.js`
-```js
-const LiquidSchemaPlugin = require('liquid-schema-plugin');
-
-module.exports = {
-    // ...
-    'webpack.extend': {
-        plugins: [
-            new LiquidSchemaPlugin({
-                from: {
-                    liquid: './src/sections',
-                    schema: './src/schema'
-                },
-                to: './dist/sections'
-            })
-        ]
-    }
-}
+npm install --save-dev liquid-schema-plugin-rollup
 ```
 
 ### Webpack
 
-Add the plugin to `webpack.config.js`
+Add the plugin to `rollup.config.js`
 ```js
-const LiquidSchemaPlugin = require('liquid-schema-plugin');
+const LiquidSchemaPlugin = require('liquid-schema-plugin-rollup');
 
-module.exports = {
-    // ...
+export default {
+    input: 'index.js',
     plugins: [
-        // ...
-        new LiquidSchemaPlugin({
-            from: {
-                liquid: './src/sections',
-                schema: './src/schema'
-            },
-            to: './dist/sections'
-        })
-    ]
+      liquidSchemaPlugin({
+        to: '/theme',
+        from: {
+          liquid: 'dev/liquid',
+          schema: 'dev/schema',
+        },
+      }),
+    ],
 }
 ```
 

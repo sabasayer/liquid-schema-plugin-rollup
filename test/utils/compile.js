@@ -1,33 +1,21 @@
 const path = require('path');
-const pack = require('../config/webpack');
+const pack = require('../config/rollup');
 const readFile = require('./readFile');
 
 const fixturesDir = path.resolve(__dirname, '../fixtures');
 
-module.exports = (filename, callback) => {
-    const compiler = pack(filename);
+module.exports = (filename) => new Promise((resolve, reject) => {
+  pack(filename).then(() => {
+    const compilerOutput = readFile(
+      path.resolve(fixturesDir, filename, 'output/index.liquid'),
+    );
+    const expectedCompilerOutput = readFile(
+      path.resolve(fixturesDir, filename, 'expected/index.liquid'),
+    );
 
-    return new Promise((resolve, reject) => {
-        compiler.run((error, stats) => {
-            if (error) {
-                return reject(error);
-            }
-
-            if (stats.hasErrors()) {
-                return reject(stats.compilation.errors[0]);
-            }
-
-            return resolve(stats);
-        });
-    }).then(() => {
-        const compilerOutput = readFile(
-            path.resolve(fixturesDir, filename, 'output/index.liquid')
-        );
-        const expectedCompilerOutput = readFile(
-            path.resolve(fixturesDir, filename, 'expected/index.liquid')
-        );
-
-        expect(compilerOutput).toEqual(expectedCompilerOutput);
-        callback();
-    });
-};
+    expect(compilerOutput).toEqual(expectedCompilerOutput);
+    resolve();
+  }).catch((err) => {
+    reject(err);
+  });
+});

@@ -1,5 +1,3 @@
 const fs = require('fs');
 
-module.exports = file => {
-    return fs.readFileSync(file, { encoding: 'utf-8' });
-};
+module.exports = (file) => fs.readFileSync(file, { encoding: 'utf-8' });
