@@ -13,7 +13,7 @@ Or npm:
 npm install --save-dev liquid-schema-plugin-rollup
 ```
 
-### Webpack
+### Rollup
 
 Add the plugin to `rollup.config.js`
 ```js
